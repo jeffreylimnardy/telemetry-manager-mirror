@@ -28,7 +28,7 @@ jobs:
             {
               echo 'tags<<TAGS'
               echo 'PR-${{ github.event.pull_request.number }}'
-              echo '${{ github.sha }'
+              echo '${{ github.sha }}'
               echo 'TAGS'
             } >> "$GITHUB_OUTPUT"
           fi
