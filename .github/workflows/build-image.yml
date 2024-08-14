@@ -32,34 +32,34 @@ jobs:
               echo 'TAGS'
             } >> "$GITHUB_OUTPUT"
           fi
-  build-image:
-    needs: envs
-    uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
-    with:
-      name: telemetry-manager
-      dockerfile: Dockerfile
-      context: .
-      tags: ${{ needs.envs.outputs.tags }}
-
-  notify-on-failure:
-    needs: build-image
-    runs-on: ubuntu-latest
-    if: ${{ always() && (needs.build-image.result == 'failure') }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Send slack message on failure
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
-        with:
-          payload-file-path: ".github/workflows/slack-message.json"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HUSKIES_NOTIF_WEBHOOK_URL }}
-
-  Build-Image-Success:
-    needs: build-image
-    runs-on: ubuntu-latest
-    steps:
-      - name: List images
-        run: |
-          echo "${{ needs.build-image.outputs.images }}"
+          #  build-image:
+          #    needs: envs
+          #    uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
+          #    with:
+          #      name: telemetry-manager
+          #      dockerfile: Dockerfile
+          #      context: .
+          #      tags: ${{ needs.envs.outputs.tags }}
+          #
+          #  notify-on-failure:
+          #    needs: build-image
+          #    runs-on: ubuntu-latest
+          #    if: ${{ always() && (needs.build-image.result == 'failure') }}
+          #    steps:
+          #      - name: Checkout code
+          #        uses: actions/checkout@v4
+          #
+          #      - name: Send slack message on failure
+          #        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
+          #        with:
+          #          payload-file-path: ".github/workflows/slack-message.json"
+          #        env:
+          #          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HUSKIES_NOTIF_WEBHOOK_URL }}
+          #
+          #  Build-Image-Success:
+          #    needs: build-image
+          #    runs-on: ubuntu-latest
+          #    steps:
+          #      - name: List images
+          #        run: |
+          #          echo "${{ needs.build-image.outputs.images }}"
