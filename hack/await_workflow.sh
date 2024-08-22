@@ -7,7 +7,7 @@ set -E          # must be set if you want the ERR trap
 set -o pipefail # prevents errors in a pipeline from being masked
 
 # Variables (you need to set these)
-REPO_OWNER="kyma-project"
+REPO_OWNER="jeffreylimnardy"
 REPO_NAME="telemetry-manager"
 WORKFLOW_NAME="Build Image"
 
