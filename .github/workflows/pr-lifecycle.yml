@@ -1,9 +1,10 @@
 name: PR Lifecycle
 
 on:
-  workflow_run:
-    workflows: [Build Image]
-    types: [completed]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
 
 jobs:
   manager-upgrade:
