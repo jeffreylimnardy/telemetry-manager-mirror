@@ -22,6 +22,8 @@ found=false
 status=""
 conclusion=""
 
+echo $GITHUB_TOKEN
+
 until [[ $status == "completed" && $conclusion == "success" ]]; do
     # Wait for timeout
     if (( SECONDS - START_TIME > TIMEOUT )); then
