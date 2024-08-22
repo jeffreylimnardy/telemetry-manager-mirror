@@ -38,12 +38,13 @@ until [[ $status == "completed" && $conclusion == "success" ]]; do
         -H "X-GitHub-Api-Version: 2022-11-28" \
         https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs)
 
-
     # Check if .workflow_runs exists and is not null
     if [ "$(echo "$response" | jq -r '.workflow_runs')" == "null" ]; then
         echo "$response"
         exit 1
     fi
+
+    echo $response
 
     # Extract all head_sha and status from response and put it into an array
     workflows=$(echo $response | jq -c '.workflow_runs[] | {name, head_sha, status, conclusion}')
