@@ -8,7 +8,7 @@ set -o pipefail # prevents errors in a pipeline from being masked
 
 # Variables (you need to set these)
 REPO_OWNER="jeffreylimnardy"
-REPO_NAME="telemetry-manager"
+REPO_NAME="telemetry-manager-mirror"
 WORKFLOW_NAME="Build Image"
 
 # retry until workflow conclusion is success and status is completed
