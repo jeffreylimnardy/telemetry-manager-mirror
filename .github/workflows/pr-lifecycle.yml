@@ -13,9 +13,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Golang
-        uses: "./.github/template/setup-golang"
-
       # wait for the build to succeed so that the manager image is available
       - name: Wait for the image to be available in the registry
         run: "./hack/await_workflow.sh"
@@ -23,6 +20,9 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           # IMAGE_REPO: "europe-docker.pkg.dev/kyma-project/dev/telemetry-manager"
           COMMIT_SHA: "${{ github.event.pull_request.head.sha }}"
+
+      - name: Setup Golang
+        uses: "./.github/template/setup-golang"
 
   PR-Lifecycle-Success:
     needs: manager-upgrade
