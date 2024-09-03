@@ -16,7 +16,7 @@ jobs:
       # wait for the build to succeed so that the manager image is available
       - name: Wait for the image to be available in the registry
         id: wait-for-status
-        uses: autotelic/action-wait-for-status-check@v1
+        run: "./hack/await_workflow.sh"
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           # IMAGE_REPO: "europe-docker.pkg.dev/kyma-project/dev/telemetry-manager"
