@@ -18,9 +18,9 @@ jobs:
         id: wait-for-status
         uses: autotelic/action-wait-for-status-check@v1
         with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           # IMAGE_REPO: "europe-docker.pkg.dev/kyma-project/dev/telemetry-manager"
-          statusName: "Build Image / build-image (pull_request_target)" 
+          COMMIT_SHA: "${{ github.event.pull_request.head.sha }}"
 
   PR-Lifecycle-Success:
     needs: manager-upgrade
