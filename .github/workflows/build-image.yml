@@ -35,7 +35,10 @@ jobs:
   build-image:
     needs: envs
     runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.test-echo.outputs.out }}
     steps:
       - name: test echo
+        id: test-echo
         run: |
-          echo "HELLO"
+          echo "out=HELLO" >> "$GITHUB_OUTPUT"
