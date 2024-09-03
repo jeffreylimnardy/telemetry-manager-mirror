@@ -21,6 +21,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           # IMAGE_REPO: "europe-docker.pkg.dev/kyma-project/dev/telemetry-manager"
           ref: "${{ github.event.pull_request.head.sha }}"
+          statusName: "build-image"
 
   PR-Lifecycle-Success:
     needs: manager-upgrade
