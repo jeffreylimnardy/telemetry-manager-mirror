@@ -31,13 +31,14 @@ until [[ $status == "completed" && $conclusion == "success" ]]; do
 
     echo "Waiting for workflow: $WORKFLOW_NAME"
 
+
     # Get the latest workflow run status
     response=$(curl -L \
-  -X POST \
+  -X GET \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/commits/4bde79171e3e2ff1c721271c6dfe283021f804d8/status)
+  https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/commits/)
 
     echo $response
     # Check if .workflow_runs exists and is not null
