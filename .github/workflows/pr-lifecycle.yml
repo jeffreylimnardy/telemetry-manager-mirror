@@ -21,8 +21,6 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           # IMAGE_REPO: "europe-docker.pkg.dev/kyma-project/dev/telemetry-manager"
           statusName: "Build Image / build-image (pull_request_target)" 
- Setup Golang
-        uses: "./.github/template/setup-golang"
 
   PR-Lifecycle-Success:
     needs: manager-upgrade
