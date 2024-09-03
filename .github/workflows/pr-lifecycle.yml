@@ -15,12 +15,12 @@ jobs:
 
       # wait for the build to succeed so that the manager image is available
       - name: Wait for the image to be available in the registry
-        run: "./hack/await_workflow.sh"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        id: wait-for-status
+        uses: autotelic/action-wait-for-status-check@v1
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
           # IMAGE_REPO: "europe-docker.pkg.dev/kyma-project/dev/telemetry-manager"
-          COMMIT_SHA: "${{ github.event.pull_request.head.sha }}"
-
+          statusName: "build-image" 
       - name: Setup Golang
         uses: "./.github/template/setup-golang"
 
