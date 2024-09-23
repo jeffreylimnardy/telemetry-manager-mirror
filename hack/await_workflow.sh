@@ -12,7 +12,7 @@ set -o pipefail # prevents errors in a pipeline from being masked
 # Variables (you need to set these)
 REPO_OWNER="jeffreylimnardy"
 REPO_NAME="telemetry-manager-mirror"
-CHECK_NAME="build-image / Build image"
+CHECK_NAME="build-image"
 
 # retry until check is found and status is completed
 # timeout after 15 minutes
