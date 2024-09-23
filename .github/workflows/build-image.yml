@@ -41,4 +41,5 @@ jobs:
       - name: test echo
         id: test-echo
         run: |
+          sleep 30
           echo "out=HELLO" >> "$GITHUB_OUTPUT"

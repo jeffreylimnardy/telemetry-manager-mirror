@@ -6,15 +6,20 @@ set -o errexit  # exit immediately when a command fails.
 set -E          # must be set if you want the ERR trap
 set -o pipefail # prevents errors in a pipeline from being masked
 
+# This script waits for check-runs of Build Image
+# It allows for other workflows to wait for the build image workflow to finish before continuing.
+
 # Variables (you need to set these)
 REPO_OWNER="jeffreylimnardy"
 REPO_NAME="telemetry-manager-mirror"
-CHECK_NAME="build-image"
+CHECK_NAME="build-image / Build image"
 
-# retry until check conclusion is success and status is completed
+# retry until check is found and status is completed
 # timeout after 15 minutes
+# poll every 60 seconds
 
 TIMEOUT=900
+QUERY_INTERVAL=60
 
 START_TIME=$SECONDS
 
@@ -22,7 +27,7 @@ found=false
 status=""
 conclusion=""
 
-until [[ $status == "completed" ]]; do
+until [[ $found == true && $status == "completed" ]]; do
     # Wait for timeout
     if (( SECONDS - START_TIME > TIMEOUT )); then
         echo "Timeout reached: Check not finished within $(( TIMEOUT/60 )) minutes"
@@ -32,7 +37,7 @@ until [[ $status == "completed" ]]; do
     echo "Waiting for check: $CHECK_NAME"
 
     # Get the latest check run status
-    response=$(curl -L \
+    response=$(curl -sL \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer $GITHUB_TOKEN" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -46,7 +51,7 @@ until [[ $status == "completed" ]]; do
     fi
 
     # Extract all head_sha and status from response and put it into an array
-    checks=$(echo $response | jq -c '.check_runs[] | {name, head_sha, status, conclusion}')
+    checks=$(echo "$response" | jq -c '.check_runs[] | {name, head_sha, status, conclusion, html_url}')
 
     # Iterate over the JSON objects
     while IFS= read -r check; do
@@ -54,6 +59,7 @@ until [[ $status == "completed" ]]; do
         head_sha=$(echo "$check" | jq -r '.head_sha')
         status=$(echo "$check" | jq -r '.status')
         conclusion=$(echo "$check" | jq -r '.conclusion')
+        html_url=$(echo $check | jq -r '.html_url')
 
         if [[ "$head_sha" == "$COMMIT_SHA" && "$check_name" == "$CHECK_NAME" ]]; then
             found=true
@@ -62,22 +68,24 @@ until [[ $status == "completed" ]]; do
     done <<< "$checks"
 
     if [ "$found" = false ]; then
-        echo "Check not found"
-        exit 1
+        echo "Check not yet found."
+        sleep $QUERY_INTERVAL
+        continue
     fi
 
     # Output the results
     echo "Latest head SHA: $head_sha"
     echo "Status: $status"
     echo "Conclusion: $conclusion"
+    echo "Job URL: $html_url"
     echo ""
 
-    sleep 10
 done
 
-if [ $conclusion != "success" ]; then
+if [ "$conclusion" != "success" ]; then
     echo "Check $status with conclusion: $conclusion"
     exit 1
 fi
 
 echo "Check '$CHECK_NAME' $status with conclusion: $conclusion"
+
