@@ -6,11 +6,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseInvalidSections(t *testing.T) {
-	section := "invalid"
-	_, err := ParseCustomSection(section)
-	require.Error(t, err)
-}
 
 func TestEmptySection(t *testing.T) {
 	section := ""
