@@ -6,8 +6,6 @@ This document describes a reproducible test setup to determine the performance o
 
 - Kubernetes cluster with 2 Nodes with 4 CPU and 16G Memory (n1-standard-4 on GCP)
 - Kubectl > 1.22.x
-- Helm 3.x
-- curl 8.4.x
 - jq 1.6
 
 
