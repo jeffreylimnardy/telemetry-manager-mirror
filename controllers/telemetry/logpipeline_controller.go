@@ -57,7 +57,7 @@ import (
 )
 
 const (
-	fbBaseName                = "telemetry-fluent-bit"
+	fbBaseName                = "telemetry-fluent-bit-test"
 	fbSectionsConfigMapName   = fbBaseName + "-sections"
 	fbFilesConfigMapName      = fbBaseName + "-files"
 	fbLuaConfigMapName        = fbBaseName + "-luascripts"
